@@ -1,6 +1,6 @@
 node{
     stage('SCM Checkout'){
-	git ''
+	git 'https://github.com/Swanandd55/iacsd.git'
 	}
     stage('Compile-Package'){
 	def mvnHome=tool name: 'maven-3', type: 'maven'
