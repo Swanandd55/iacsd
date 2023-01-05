@@ -21,8 +21,8 @@
        state: present
    - name: Restart the container
      docker_container:
-       name: dvja
-       image: "swanandd55/appsecco"
+       name: webapp
+       image: "swanandd55/dvja"
        state: started
        published_ports:
        - 0.0.0.0:8500:8080
