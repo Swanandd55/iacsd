@@ -21,7 +21,7 @@
    -name:start the container
    docker_container:
      name:webapp
-     image:"swanandd55/webapp:{{DOCKER_TAG}}"
+     image:"swanandd55/appsecco"
      state:started
      published-ports:
      -0.0.0.0:8080:8080
