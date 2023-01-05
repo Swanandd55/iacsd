@@ -19,10 +19,10 @@
      pip:
        name: docker-py
        state: present
-   - name: Restart a container
+   - name: Start a container
      docker_container:
-       name: myapplication
-       image: someuser/appimage
+       name: dvja
+       image: swanandd55/dvja
        state: started
        restart: yes
      ports:
