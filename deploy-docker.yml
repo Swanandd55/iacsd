@@ -19,10 +19,10 @@
      pip:
        name: docker-py
        state: present
-   - name: Start the container
+   - name: start the container
      docker_container:
-       name: appsecco
-       image: "swanandd55/appsecco:{{DOCKER_TAG}}"
+       name: webapp
+       image: "swanandd55/appsecco"
        state: started
        published_ports:
        - 0.0.0.0:8080:8080
