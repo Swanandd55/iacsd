@@ -19,7 +19,7 @@
      pip:
        name: docker-py
        state: present
-   - name: Restart the container
+   - name: Start the container
      docker_container:
        name: dvja
        image: "swanandd55/dvja"
