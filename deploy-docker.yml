@@ -37,3 +37,11 @@
           - 0.0.0.0:8080:8080
         volumes_from:
           - mydata
+    - name: Restart a container
+      community.docker.docker_container:
+        name: myapplication
+        image: someuser/appimage
+        state: started
+        restart: true
+        ports:
+          - "8080:9000"
