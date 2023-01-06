@@ -1,2 +1,2 @@
 [dev]
-192.168.80.139 ansible_user=shuhari
+192.168.80.139 ansible_pass=root ansible_user=root
