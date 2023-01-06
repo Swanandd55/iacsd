@@ -38,8 +38,8 @@
           - mydata
     - name: Restart a container
       community.docker.docker_container:
-        name: myapplication
-        image: someuser/appimage
+        name: appsecco
+        image: swanandd55/appsecco:{{DOCKER_TAG}}
         state: started
         restart: true
         ports:
