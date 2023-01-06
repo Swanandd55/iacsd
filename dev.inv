@@ -1,2 +1,2 @@
 [dev]
-172.31.42.90 ansible_user=ec2-user
+192.168.80.139 ansible_user=shuhari
