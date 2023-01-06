@@ -19,7 +19,7 @@
       pip:
         name: docker-py
         state: present
-    - name: Start the container
+    - name: Run the container
       docker_container:
         name: appsecco
         image: "swanandd55/appsecco:{{DOCKER_TAG}}"
