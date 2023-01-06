@@ -19,10 +19,19 @@
       pip:
         name: docker-py
         state: present
-    - name: Start the container
+    - name: Create a data container
       community.docker.docker_container:
-        name: appsecco
-        image: "swanandd55/appsecco:{{DOCKER_TAG}}"
-        state: started
+        name: mydata
+        image: busybox
+        volumes:
+          - /data
+
+    - name: Re-create a redis container
+      community.docker.docker_container:
+        name: myredis
+        image: redis
+        command: redis-server --appendonly yes
+        state: present
+        recreate: true
         published_ports:
           - 0.0.0.0:8080:8080
