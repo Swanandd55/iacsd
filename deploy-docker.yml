@@ -1,20 +1,18 @@
 ---
-- hosts: dev
+- hosts: ""
+  vars_files:
+    - "/home/src/ansible-scripts/.yml"
   become: True
   tasks:
     - name: Install python pip
       yum:
         name: python-pip
         state: present
-    - name: Install docker
-      yum:
-        name: docker
-        state: present
     - name: Install docker-py python module
       pip:
         name: docker-py
         state: present
-    - name: Start the container
+    - name: Start the Hello service
       docker_container:
         name: appsecco
         image: "swanandd55/appsecco:{{DOCKER_TAG}}"
