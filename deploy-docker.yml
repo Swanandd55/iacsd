@@ -15,7 +15,7 @@
         name: docker
         state: started
         enabled: yes
-    - name: Install docker-py python module
+    - name: Install Docker Module for Python docker-py
       pip:
         name: docker-py
         state: present
