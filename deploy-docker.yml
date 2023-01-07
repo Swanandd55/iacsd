@@ -15,6 +15,6 @@
         daemon-reload: yes
     - name: Docker Run
       service:
-        name: docker
+        name: docker.service
         state: started
         enabled: yes
