@@ -1,6 +1,8 @@
 ---
 - hosts: dev
+  user: ansible
   become: True
+  connection: ssh
   tasks:
     - name: Install python pip
       yum:
@@ -13,6 +15,11 @@
     - name: System Reload
       ansible.builtin.systemd:
         daemon-reload: yes
+   handlers:
+    - name: restart docker
+      service:
+      name: docker
+      state: restarted
     - name: Docker Run
       service:
         name: docker.service
