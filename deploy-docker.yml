@@ -10,12 +10,3 @@
       yum:
         name: docker
         state: present
-    - name: start docker
-      service:
-        name: docker
-        state: started
-        enabled: True
-    - name: Install docker-py python module
-      pip:
-        name: docker-py
-        state: present
