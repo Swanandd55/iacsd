@@ -20,7 +20,7 @@
         name: docker-py
         state: present
     - name: Start the container
-      community.general.docker_container:
+      community.docker.docker_container:
         name: "appsecco"
         image: swanandd55/appsecco:{{DOCKER_TAG}}
         state: started
