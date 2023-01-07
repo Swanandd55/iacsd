@@ -3,6 +3,7 @@
   user: ansible
   become: True
   connection: ssh
+  tasks:
     - name: Install python pip
       yum:
         name: python-pip
