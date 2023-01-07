@@ -17,21 +17,10 @@
         name: docker
         state: started
         enabled: yes
-    - name: daemon_reload
-      ansible.builtin.systemd:
-      daemon_reload: yes
-  handlers:
-    - name: restart docker
-      action: service name=docker state=restarted
     - name: Install docker-py python module
       pip:
         name: docker-py
         state: present
-  tasks:
-    - name: Start the container
-      docker_container:
-        name: appsecco
-        image: "swanandd55/appsecco:{{DOCKER_TAG}}"
-        state: started
-        published_ports:
-          - 0.0.0.0:8080:8080
+    - name: daemon_reload
+      ansible.builtin.systemd:
+      daemon_reload: yes
