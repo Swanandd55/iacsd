@@ -1,23 +1,28 @@
 - hosts: dev
+  become: True
   tasks:
-
-   - name: Creation of yum repo
-     yum_repository:
-         name: asifrepo
-         baseurl: https://download.docker.com/linux/rhel/docker-ce.repo
-         description : My repo
-         gpgcheck: 0
-
-   - name: Installation of docker in managed node
-     package:
-        name: "docker-ce"
+   - name: Install python pip
+      yum:
+        name: python-pip
         state: present
-
+    - name: Install docker
+      yum:
+        name: docker
+        state: present
+    - name: start docker
+      service:
+        name: docker
+        state: started
+        enabled: yes
    - name: Starting docker and enable
      service:
         name: "docker"
         state: started
         enabled: yes
+   - name: Install docker-py python module
+     pip:
+       name: docker-py
+       state: present
 
    - name: Installation of required packages by docker
      command: "pip3 install docker"
