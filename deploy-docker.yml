@@ -3,7 +3,6 @@
   user: ansible
   become: True
   connection: ssh
-  tasks:
     - name: Install python pip
       yum:
         name: python-pip
@@ -12,24 +11,15 @@
       yum:
         name: docker
         state: present
-    - name: System Reload
-      ansible.builtin.systemd:
-        daemon-reload: yes
-    - name: Install docker-py python module
-      pip:
-        name: docker-py
-        state: present
-  handlers:
-    - name: restart docker
-      service:
-        name: docker
-        state: restarted
-  tasks:
-    - name: Docker Run
+    - name: start docker
       service:
         name: docker
         state: started
         enabled: yes
+    - name: Install docker-py python module
+      pip:
+        name: docker-py
+        state: present
     - name: Start the container
       docker_container:
         name: appsecco
