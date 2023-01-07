@@ -24,6 +24,7 @@
       pip:
         name: docker-py
         state: present
+  tasks:
     - name: Start the container
       docker_container:
         name: appsecco
