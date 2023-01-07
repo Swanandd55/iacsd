@@ -17,7 +17,7 @@
         name: docker
         state: started
         enabled: yes
-  handler:
+  handlers:
     - name: restart docker
       action: service name=docker state=restarted
     - name: Install docker-py python module
