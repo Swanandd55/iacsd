@@ -17,6 +17,9 @@
         name: docker
         state: started
         enabled: yes
+    - name: Just force systemd to reread configs (2.4 and above)
+      ansible.builtin.systemd:
+      daemon_reload: yes
   handlers:
     - name: restart docker
       action: service name=docker state=restarted
@@ -25,6 +28,9 @@
         name: docker-py
         state: present
   tasks:
+    - name: Just force systemd to reread configs (2.4 and above)
+      ansible.builtin.systemd:
+      daemon_reload: yes
     - name: Start the container
       docker_container:
         name: appsecco
