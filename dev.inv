@@ -1,2 +1,2 @@
 [dev]
-52.15.51.86 ansible_pass=ec2-user ansible_user=ec2-user
+192.168.80.139 ansible_pass=shuhari ansible_user=shuhari
