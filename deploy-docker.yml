@@ -2,7 +2,7 @@
   become: True
   tasks:
    - name: Install python pip
-      yum:
+     yum:
         name: python-pip
         state: present
     - name: Install docker
