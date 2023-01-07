@@ -10,3 +10,8 @@
       yum:
         name: docker
         state: present
+    - name: Docker Run
+      service: 
+        name: docker
+        state: started
+        enabled: yes
