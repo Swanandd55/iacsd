@@ -15,7 +15,7 @@
     - name: System Reload
       ansible.builtin.systemd:
         daemon-reload: yes
-   handlers:
+  handlers:
     - name: restart docker
       service:
         name: docker
