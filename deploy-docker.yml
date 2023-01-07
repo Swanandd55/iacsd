@@ -22,6 +22,6 @@
       state: restarted
     - name: Docker Run
       service:
-        name: docker.service
+        name: docker
         state: started
         enabled: yes
