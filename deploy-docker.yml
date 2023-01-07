@@ -10,8 +10,11 @@
       yum:
         name: docker
         state: present
-    - name: Docker Run
+    - name: System Reload
+      ansible.builtin.systemd:
+        daemon-reload: yes
+    - name: Docker Run check 
       service: 
-        name: docker.service
+        name: docker
         state: started
         enabled: yes
