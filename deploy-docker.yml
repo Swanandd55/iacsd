@@ -1,6 +1,5 @@
 ---
--hosts: [dev]
- user: ansible
+-hosts: dev
  become: True
  connection: ssh
  tasks:
