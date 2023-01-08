@@ -1,23 +1,241 @@
----
-- hosts: dev
-  user: ansible
-  become: True
-  connection: ssh
-  tasks:
-    - name: Install python pip
-      yum:
-        name: python-pip
-        state: present
-    - name: Install docker
-      yum:
-        name: docker
-        state: present
-    - name: start docker
-      service:
-        name: docker
-        state: started
-        enabled: yes
-    - name: Install docker-py python module
-      pip:
-        name: docker-py
-        state: present
+- name: Create a data container
+  community.docker.docker_container:
+    name: mydata
+    image: busybox
+    volumes:
+      - /data
+
+- name: Re-create a redis container
+  community.docker.docker_container:
+    name: myredis
+    image: redis
+    command: redis-server --appendonly yes
+    state: present
+    recreate: true
+    exposed_ports:
+      - 6379
+    volumes_from:
+      - mydata
+
+- name: Restart a container
+  community.docker.docker_container:
+    name: myapplication
+    image: someuser/appimage
+    state: started
+    restart: true
+    links:
+     - "myredis:aliasedredis"
+    devices:
+     - "/dev/sda:/dev/xvda:rwm"
+    ports:
+     # Publish container port 9000 as host port 8080
+     - "8080:8080"
+    env:
+        SECRET_KEY: "ssssh"
+        # Values which might be parsed as numbers, booleans or other types by the YAML parser need to be quoted
+        BOOLEAN_KEY: "yes"
+
+- name: Container present
+  community.docker.docker_container:
+    name: mycontainer
+    state: present
+    image: ubuntu:14.04
+    command: sleep infinity
+
+- name: Stop a container
+  community.docker.docker_container:
+    name: mycontainer
+    state: stopped
+
+- name: Start 4 load-balanced containers
+  community.docker.docker_container:
+    name: "container{{ item }}"
+    recreate: true
+    image: someuser/anotherappimage
+    command: sleep 1d
+  with_sequence: count=4
+
+- name: Remove container
+  community.docker.docker_container:
+    name: ohno
+    state: absent
+
+- name: Syslogging output
+  community.docker.docker_container:
+    name: myservice
+    image: busybox
+    log_driver: syslog
+    log_options:
+      syslog-address: tcp://my-syslog-server:514
+      syslog-facility: daemon
+      # NOTE: in Docker 1.13+ the "syslog-tag" option was renamed to "tag" for
+      # older docker installs, use "syslog-tag" instead
+      tag: myservice
+
+- name: Create db container and connect to network
+  community.docker.docker_container:
+    name: db_test
+    image: "postgres:latest"
+    networks:
+      - name: "{{ docker_network_name }}"
+
+- name: Start container, connect to network and link
+  community.docker.docker_container:
+    name: sleeper
+    image: ubuntu:14.04
+    networks:
+      - name: TestingNet
+        ipv4_address: "172.16.1.100"
+        aliases:
+          - sleepyzz
+        links:
+          - db_test:db
+      - name: TestingNet2
+
+- name: Start a container with a command
+  community.docker.docker_container:
+    name: sleepy
+    image: ubuntu:14.04
+    command: ["sleep", "infinity"]
+
+- name: Add container to networks
+  community.docker.docker_container:
+    name: sleepy
+    networks:
+      - name: TestingNet
+        ipv4_address: 172.16.1.18
+        links:
+          - sleeper
+      - name: TestingNet2
+        ipv4_address: 172.16.10.20
+
+- name: Update network with aliases
+  community.docker.docker_container:
+    name: sleepy
+    networks:
+      - name: TestingNet
+        aliases:
+          - sleepyz
+          - zzzz
+
+- name: Remove container from one network
+  community.docker.docker_container:
+    name: sleepy
+    networks:
+      - name: TestingNet2
+    comparisons:
+      networks: strict
+
+- name: Remove container from all networks
+  community.docker.docker_container:
+    name: sleepy
+    comparisons:
+      networks: strict
+
+- name: Start a container and use an env file
+  community.docker.docker_container:
+    name: agent
+    image: jenkinsci/ssh-slave
+    env_file: /var/tmp/jenkins/agent.env
+
+- name: Create a container with limited capabilities
+  community.docker.docker_container:
+    name: sleepy
+    image: ubuntu:16.04
+    command: sleep infinity
+    capabilities:
+      - sys_time
+    cap_drop:
+      - all
+
+- name: Finer container restart/update control
+  community.docker.docker_container:
+    name: test
+    image: ubuntu:18.04
+    env:
+      arg1: "true"
+      arg2: "whatever"
+    volumes:
+      - /tmp:/tmp
+    comparisons:
+      image: ignore   # do not restart containers with older versions of the image
+      env: strict   # we want precisely this environment
+      volumes: allow_more_present   # if there are more volumes, that's ok, as long as `/tmp:/tmp` is there
+
+- name: Finer container restart/update control II
+  community.docker.docker_container:
+    name: test
+    image: ubuntu:18.04
+    env:
+      arg1: "true"
+      arg2: "whatever"
+    comparisons:
+      '*': ignore  # by default, ignore *all* options (including image)
+      env: strict   # except for environment variables; there, we want to be strict
+
+- name: Start container with healthstatus
+  community.docker.docker_container:
+    name: nginx-proxy
+    image: nginx:1.13
+    state: started
+    healthcheck:
+      # Check if nginx server is healthy by curl'ing the server.
+      # If this fails or timeouts, the healthcheck fails.
+      test: ["CMD", "curl", "--fail", "http://nginx.host.com"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+- name: Remove healthcheck from container
+  community.docker.docker_container:
+    name: nginx-proxy
+    image: nginx:1.13
+    state: started
+    healthcheck:
+      # The "NONE" check needs to be specified
+      test: ["NONE"]
+
+- name: Start container with block device read limit
+  community.docker.docker_container:
+    name: test
+    image: ubuntu:18.04
+    state: started
+    device_read_bps:
+      # Limit read rate for /dev/sda to 20 mebibytes per second
+      - path: /dev/sda
+        rate: 20M
+    device_read_iops:
+      # Limit read rate for /dev/sdb to 300 IO per second
+      - path: /dev/sdb
+        rate: 300
+
+- name: Start container with GPUs
+  community.docker.docker_container:
+    name: test
+    image: ubuntu:18.04
+    state: started
+    device_requests:
+      - # Add some specific devices to this container
+        device_ids:
+          - '0'
+          - 'GPU-3a23c669-1f69-c64e-cf85-44e9b07e7a2a'
+      - # Add nVidia GPUs to this container
+        driver: nvidia
+        count: -1  # this means we want all
+        capabilities:
+          # We have one OR condition: 'gpu' AND 'utility'
+          - - gpu
+            - utility
+          # See https://github.com/NVIDIA/nvidia-container-runtime#supported-driver-capabilities
+          # for a list of capabilities supported by the nvidia driver
+
+- name: Start container with storage options
+  community.docker.docker_container:
+    name: test
+    image: ubuntu:18.04
+    state: started
+    storage_opts:
+      # Limit root filesystem to 12 MB - note that this requires special storage backends
+      # (https://fabianlee.org/2020/01/15/docker-use-overlay2-with-an-xfs-backing-filesystem-to-limit-rootfs-size/)
+      size: 12m
