@@ -1,7 +1,9 @@
 ---
-hosts: [dev]
-become: True
-tasks:
+-hosts: [dev]
+ user: ansible
+ become: True
+ connection: ssh
+ tasks:
 - name: Create a data container
   community.docker.docker_container:
     name: mydata
