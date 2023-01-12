@@ -8,7 +8,6 @@ node{
 	}
     stage('SonarQube Analysis'){
 	mvn clean verify sonar:sonar
-	}
     }
 	    
 }
