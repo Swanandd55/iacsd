@@ -7,8 +7,9 @@ node{
 	    sh "${mvnHome}/bin/mvn package"
     }   
      stage('SonarQube Analysis'){
-	 withSonarQubeEnv('SonarNET') {
-         sh 'mvn clean install -U -DskipTests -f my-package/pom.xml sonar:sonar -Dsonar.login=1e17da0be8d24ec635a3be45b9cde4cbb05c7bb4'   
+	 def mvnHome=tool name:'maven-3',type:'maven'
+	 withSonarQubeEnv('Sonar Analysis') {
+		 sh "${mvnHome}/bin/mvn sonar:sonar"
     	}
     }
 }
