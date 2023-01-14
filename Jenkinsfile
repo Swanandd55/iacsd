@@ -10,7 +10,6 @@ node{
 	 def mvnHome=tool name:'maven-3',type:'maven'
 	 withSonarQubeEnv('Sonar Analysis') {
 		mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 
-  -Dsonar.login=
-    	}
+  -Dsonar.login=e2ab6330e93f0d1b663c1f1185ed78ff1329678c
     }
 }
