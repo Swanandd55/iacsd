@@ -7,10 +7,9 @@ node{
 	    sh "${mvnHome}/bin/mvn package"
     }   
      stage('SonarQube Analysis'){
-	 def mvnHome=tool name:'maven-3',type:'maven'
 	 withSonarQubeEnv('Sonar Analysis') {
 		 withSonarQubeEnv('sonar'){
-		 sh "${mvnHome}/bin/mvn sonar:sonar"
+		 mvn clean verify sonar:sonar -Dsonar.login=6d071203c46f846ad7e3bf578c8318e3c0b6341f
 		 }
     	}
     }
