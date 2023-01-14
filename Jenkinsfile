@@ -9,9 +9,8 @@ node{
      stage('SonarQube Analysis'){
 	 def mvnHome=tool name:'maven-3',type:'maven'
 	 withSonarQubeEnv('Sonar Analysis') {
-		 withSonarQubeEnv('sonar'){
-			 sh "${mvnHome}/bin/bash sonarqube:sonaqube"
-		 }
+		mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 
+  -Dsonar.login=
     	}
     }
 }
