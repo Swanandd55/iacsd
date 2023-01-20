@@ -49,8 +49,8 @@ pipeline{
 						try{
 							sh "ssh ubuntu@18.117.138.241 kubectl apply -f ."
 
-							}catch(error)
-								sh "ssh ubuntu@18.117.138.241 kubectl create -f ."
+						}catch(error)
+							sh "ssh ubuntu@18.117.138.241 kubectl create -f ."
 							{
 						}
 					}
