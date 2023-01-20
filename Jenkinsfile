@@ -8,6 +8,13 @@ pipeline{
 	environment {
   		DOCKER_TAG = getVersion()
 	}
+	stages{
+		stage('SCM'){
+			steps{
+				git credentialsId: 'github', url: 'https://github.com/Swanandd55/iacsd.git'
+			}
+		}
+	}
 	stages {
 
 		stage('Build') {
