@@ -41,11 +41,11 @@ pipeline{
 			steps{
 				sshagent(['k8s-jenkins'])
 				{
-					sh 'scp -r -o StrictHostKeyChecking=no node-deployment.yaml ubuntu@3.144.250.103:/home/ec2-user/'
+					sh 'scp -r -o StrictHostKeyChecking=no node-deployment.yaml ubuntu@3.144.250.103:/home/ubuntu/'
 					
 					script{
 						try{
-							sh 'ssh ubuntu@3.144.250.103:/home/ec2-user/ kubectl apply -f node-deployment.yaml --kubeconfig=/path/kube.yaml'
+							sh 'ssh ubuntu@3.144.250.103:/home/ec2-user/ kubectl apply -f /home/ubuntu/node-deployment.yaml --kubeconfig=/path/kube.yaml'
 
 							}catch(error)
 							{
