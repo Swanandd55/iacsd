@@ -2,20 +2,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodeapp-deployment
+  name: appsecco-deployment
   labels:
-     app: nodeapp
+     app: appsecco
      type: front-end
 spec:
   template:
      metadata:
-       name: nodejsapp-pod
+       name: appsecco-pod
        labels: 
-         app: nodejsapp
+         app: appsecco
          type: front-end
      spec:
          containers:
-           - name: nodejsapp-erp
+           - name: appseccoapp
              image: "swanandd55/appsecco:{{DOCKER_TAG}}"
   replicas: 1
   selector:
@@ -26,10 +26,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodejs-service
+  name: appsecco-service
 spec:
   selector:
-    app: nodejsapp
+    app: appsecco
   type: LoadBalancer  
   ports:
     - protocol: TCP
