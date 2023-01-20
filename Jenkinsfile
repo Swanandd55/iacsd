@@ -2,13 +2,18 @@
 pipeline{
 
 	agent any
-
+	tools {
+  		maven 'maven-3'
+	}
+	environment {
+  		DOCKER_TAG = getVersion()
+	}
 	stages {
 
 		stage('Build') {
 
 			steps {
-				sh 'docker build . -t swanandd55/appsecco:1.0'
+				sh 'docker build . -t swanandd55/appsecco:${{DOCKER_TAG}}'
 			}
 		}
 
@@ -49,4 +54,8 @@ pipeline{
 		}
 	}
 
+}
+def getVersion(){
+	def hashcommit=sh returnStdout: true, script: 'git rev-parse --short HEAD'
+	return hashcommit
 }
