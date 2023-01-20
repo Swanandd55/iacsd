@@ -45,11 +45,11 @@ pipeline{
 					
 					script{
 						try{
-							sh 'ssh ubuntu@18.117.138.241:/home/ec2-user/ kubectl apply -f /home/ubuntu/node-deployment.yaml --kubeconfig=/path/kube.yaml'
+							sh 'ssh ubuntu@18.117.138.241:/home/ec2-user/ kubectl apply -f /home/ubuntu/node-deployment.yaml --kubeconfig=/home/ubuntu/kube.yaml'
 
 							}catch(error)
 							{
-						sh "ssh ubuntu@18.117.138.241 docker run -d -p 8080:8080 --name appsecco ${DOCKER_TAG}"
+						sh "ssh ubuntu@18.117.138.241 docker run -d -p 8080:8080 --name appsecco"
 						}
 					}
 				}
