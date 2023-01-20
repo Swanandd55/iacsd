@@ -49,7 +49,7 @@ pipeline{
 
 							}catch(error)
 							{
-
+						sh "ssh ubuntu@18.117.138.241 docker run -d -p 8080:8080 --name appsecco ${DOCKER_TAG}"
 						}
 					}
 				}
