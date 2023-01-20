@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: appsecco
+  labels:
+    app: appsecco
+spec:
+  containers:
+    - name: nodeapp
+      image: swanandd55/appsecco:v1
+      ports:
+        - containerPort: 8080
