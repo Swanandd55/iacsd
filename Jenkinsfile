@@ -22,7 +22,7 @@ pipeline{
 		stage('Build') {
 
 			steps {
-				sh 'docker build . -t swanandd55/appsecco:${{DOCKER_TAG}}'
+				sh 'docker build . -t swanandd55/appsecco:${DOCKER_TAG}'
 			}
 		}
 
@@ -32,7 +32,7 @@ pipeline{
 				withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'DockerHubpwd')]) {
 					sh "docker login -u swanandd55 -p ${DockerHubpwd}"
 				}
-				sh 'docker push swanandd55/appsecco:${{DOCKER_TAG}}'
+				sh 'docker push swanandd55/appsecco:${DOCKER_TAG}'
 			}
 		}
 
