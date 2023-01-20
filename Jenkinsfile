@@ -39,17 +39,19 @@ pipeline{
 		stage('Deploy to K8s')
 		{
 			steps{
+				sh "chmod +x changeTag.sh"
+				sh "./changeTag.sh ${DOCKER_TAG}"
 				sshagent(['k8s-jenkins'])
 				{
-					sh 'scp -r -o StrictHostKeyChecking=no node-deployment.yaml ubuntu@18.117.138.241:/home/ubuntu/'
+					sh 'scp -o StrictHostKeyChecking=no node-deployment.yaml ubuntu@18.117.138.241:/home/ubuntu/'
 					
 					script{
 						try{
-							sh 'ssh ubuntu@18.117.138.241:/home/ec2-user/ kubectl apply -f /home/ubuntu/node-deployment.yaml --kubeconfig=/home/ubuntu/kube.yaml'
+							sh "ssh ubuntu@18.117.138.241 kubectl apply -f ."
 
 							}catch(error)
+								sh "ssh ubuntu@18.117.138.241 kubectl create -f ."
 							{
-						sh "ssh ubuntu@18.117.138.241 docker run -d -p 8080:8080 --name appsecco"
 						}
 					}
 				}
