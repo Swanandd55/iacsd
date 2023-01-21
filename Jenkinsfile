@@ -9,6 +9,7 @@ pipeline{
 				git credentialsId: 'github', url: 'https://github.com/Swanandd55/iacsd.git'
 			}
 		}
+	}
 		stage('Maven Build'){
 			steps{
 				sh "mvn clean package"
