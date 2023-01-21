@@ -7,7 +7,7 @@ node{
 		stage('Maven Build'){
 			steps{
 				def mvnHome=tool name:'maven-3',type:'maven'
-				sh "${mvnHome}/bin/mvn packge"
+				sh "${mvnHome}/bin/mvn package"
 			}
 		}
     		stage('SonarQube Analysis') {
