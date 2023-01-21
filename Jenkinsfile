@@ -9,7 +9,6 @@ pipeline{
 				git credentialsId: 'github', url: 'https://github.com/Swanandd55/iacsd.git'
 			}
 		}
-	}
 		stage('Maven Build'){
 			steps{
 				sh "mvn clean package"
@@ -19,6 +18,7 @@ pipeline{
       		  def mvn = tool 'Default Maven';
       		  withSonarQubeEnv() {
        			sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins_integration"
-    }
-  }
+    			}
+  		}
+	}
 }
