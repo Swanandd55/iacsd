@@ -1,9 +1,4 @@
-pipeline{
-	agent any
-	tools {
-  		maven 'maven-3'
-	}
-	stages{
+node{
 		stage('SCM'){
 			steps{
 				git credentialsId: 'github', url: 'https://github.com/Swanandd55/iacsd.git'
@@ -11,14 +6,15 @@ pipeline{
 		}
 		stage('Maven Build'){
 			steps{
-				sh "mvn clean package"
+				def mvnHome=tool name:'maven-3',type:'maven'
+				sh "${mvnHome}/bin/mvn packge"
 			}
 		}
     		stage('SonarQube Analysis') {
-      		  def mvn = tool 'Default Maven';
+      		  def mvnHome=tool name:'maven-3',type:'maven'
       		  withSonarQubeEnv() {
        			sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins_integration"
-    			}
+    			 name}
   		}
-	}
-}
+    }
+
