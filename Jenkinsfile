@@ -13,8 +13,8 @@ node{
     		stage('SonarQube Analysis') {
       		  def mvnHome=tool name:'maven-3',type:'maven'
       		  withSonarQubeEnv() {
-       			sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins_integration"
-    			 name}
-  		}
-    }
+       			sh "mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins_integration -Dsonar.host.url=http://192.168.1.56:9000 -Dsonar.login=sqp_a5e99c1d5996a29601962ec6f2ba933efedf9580"
+    			 }
+    		}
+}
 
