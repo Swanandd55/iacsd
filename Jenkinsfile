@@ -1,11 +1,7 @@
-
-pipeline{
-
-	agent any
+node{
 	environment {
   		DOCKER_TAG = getVersion()
 	}
-	stages{
 		stage('SCM'){
 			steps{
 				git credentialsId: 'github', url: 'https://github.com/Swanandd55/iacsd.git'
@@ -67,7 +63,6 @@ pipeline{
 		}
 	}
 
-}
 def getVersion(){
 	def hashcommit=sh returnStdout: true, script: 'git rev-parse --short HEAD'
 	return hashcommit
