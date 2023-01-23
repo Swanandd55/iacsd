@@ -31,7 +31,7 @@ pipeline{
 			}
 		}
 
-		stage('Login') {
+		stage('Login & Push') {
 			steps{
 				withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'DockerHubpwd')]) {
 					sh "docker login -u swanandd55 -p ${DockerHubpwd}"
@@ -40,7 +40,7 @@ pipeline{
 			}
 		}
 
-		stage('Deploy to K8s'){
+		stage('kubernetes_client'){
 			steps{
 				sh "chmod +x changeTag.sh"
 				sh "./changeTag.sh ${DOCKER_TAG}"
