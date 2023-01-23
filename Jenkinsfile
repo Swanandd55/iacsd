@@ -17,13 +17,14 @@ pipeline{
 				sh "mvn clean package"
 			}
 		}
-		stage('SonarQube Analysis') {
-			steps{
-    		 		withSonarQubeEnv() {
-      					sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins_integration"
-				}
-    			}
-  		}
+		stage("build & SonarQube analysis") {
+            		agent any
+            		steps {
+              			withSonarQubeEnv('My SonarQube Server') {
+                			sh 'mvn clean package sonar:sonar'
+              			}
+            		}
+          	}
 		stage('Build') {
 			steps{
 				sh 'docker build . -t swanandd55/appsecco:${DOCKER_TAG}'
