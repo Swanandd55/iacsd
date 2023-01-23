@@ -85,7 +85,7 @@
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
-        <version>2.31.1</version>
+        <version>1.9.1</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
