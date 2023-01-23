@@ -2,9 +2,6 @@
 pipeline{
 
 	agent any
-	tools {
-  		maven 'maven-3'
-	}
 	environment {
   		DOCKER_TAG = getVersion()
 	}
@@ -16,7 +13,8 @@ pipeline{
 		}
 		stage('Maven Build'){
 			steps{
-				sh "mvn clean package"
+				def mvnHome = tool name:'maven-3',type:'maven';
+				sh "${mvnHome}/bin/mvn package"
 			}
 		}
 		stage('SonarQube Analysis') {
