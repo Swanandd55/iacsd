@@ -11,3 +11,4 @@ node {
   stage('QualityGate'){
     waitForQualityGate abortPipeline: true
 }
+}
