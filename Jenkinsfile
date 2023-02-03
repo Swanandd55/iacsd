@@ -8,4 +8,6 @@ node {
       sh "${mvnHome}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins_integration"
     }
   }
+  stage('QualityGate'){
+    waitForQualityGate abortPipeline: true
 }
