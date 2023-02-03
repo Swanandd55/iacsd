@@ -51,11 +51,11 @@ pipeline{
 			}
 		}
 	}
-	}
 	post {
 		always {
 			sh 'docker logout'
 		}
+	}
 	}
 
 def getVersion(){
